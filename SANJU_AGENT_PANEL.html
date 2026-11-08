@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101a2d">
+<title>SANJU AGENT PANEL</title>
+<style>
+:root{--bg:#0b1220;--panel:#142139;--panel2:#0f1a2e;--line:#2b3c59;--muted:#aab8ce;--text:#f4f7ff;--blue:#4c8dff;--green:#21c58b;--red:#e85b70;--gold:#ffc857}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top right,#1c3152 0,#0b1220 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
+.wrap{max-width:1080px;margin:auto;padding:22px 15px 40px}.brand{font-size:25px;font-weight:850;letter-spacing:.4px}.sub{color:var(--muted);margin:5px 0 20px}
+.card{background:rgba(20,33,57,.96);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 12px 35px #0003}
+.auth{max-width:470px;margin:6vh auto}.hidden{display:none!important}
+h2,h3{margin-top:0}.muted,.small{color:var(--muted)}.small{font-size:12px;line-height:1.5}
+label{display:block;color:#d4deef;font-size:13px;margin:13px 0 6px}
+input,select{width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:#0a1425;color:white;outline:none;font:inherit}
+input:focus,select:focus{border-color:var(--blue)}
+.btn{border:0;border-radius:10px;padding:11px 14px;background:#30435f;color:#fff;cursor:pointer;font-weight:700;font:inherit}
+.primary{background:var(--blue)}.green{background:#147b5b}.red{background:#96384b}.gold{background:#80601c}.btn:disabled{opacity:.5}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}.tabs button{border:1px solid var(--line);background:#0e1a2d;color:#dce7fa;padding:12px;border-radius:10px;font-weight:700}.tabs button.active{background:var(--blue);border-color:var(--blue);color:white}
+.notice{padding:12px 13px;border-radius:11px;background:#192d49;color:#d5e5ff;margin:14px 0;font-size:13px;line-height:1.55}.warning{background:#3c2e17;color:#ffe4a4}.error{color:#ff9eaa}.success{color:#75e7b9}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:17px 0}.stat{background:#0d192b;border:1px solid var(--line);border-radius:13px;padding:14px}.stat b{display:block;font-size:27px;margin-top:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.section{margin-top:15px}.search{max-width:280px}
+.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin-top:10px;min-width:650px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-weight:650}.pill{display:inline-block;padding:4px 9px;border-radius:30px;background:#163b34;color:#8ef0c7;font-size:12px}.pill.off{background:#40242c;color:#ffb4bd}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions .btn{padding:7px 9px;font-size:12px}.empty{text-align:center;padding:26px;color:var(--muted)}
+.userbox{text-align:center;max-width:560px;margin:7vh auto}.avatar{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#1f477e;font-size:30px;margin:0 auto 14px}
+@media(max-width:620px){.wrap{padding:15px 12px 30px}.card{padding:15px}.stats{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.brand{font-size:22px}.toolbar{width:100%}.toolbar .btn{flex:1}.search{max-width:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="brand">✦ SANJU AGENT PANEL</div>
+ <div class="sub">Simple Admin & User Management</div>
+
+ <section id="auth" class="card auth">
+  <h2 id="authTitle">स्वागत है</h2>
+  <p class="muted" id="authDesc">लॉगिन करने के लिए अपना रोल चुनें।</p>
+  <div class="notice warning"><b>डेमो की जरूरी जानकारी:</b> यह एक ही HTML फाइल वाला लोकल डेमो है। अकाउंट और पासवर्ड इसी ब्राउज़र/डिवाइस में सेव होंगे। असली पब्लिक वेबसाइट के लिए सुरक्षित सर्वर और डेटाबेस जरूरी हैं।</div>
+  <div class="tabs" id="roleTabs">
+   <button type="button" id="adminTab" class="active" onclick="chooseRole('admin')">Admin Login</button>
+   <button type="button" id="userTab" onclick="chooseRole('user')">Public User Login</button>
+  </div>
+  <form id="setupForm" class="hidden">
+   <h3>पहली बार Admin सेटअप</h3>
+   <p class="small">अपना Admin यूजरनेम और मजबूत पासवर्ड बनाएँ। इसे सुरक्षित जगह लिखकर रखें।</p>
+   <label>Admin का नाम</label><input id="setupName" autocomplete="name" placeholder="जैसे Sanju" required>
+   <label>Admin Username</label><input id="setupUser" autocomplete="username" placeholder="जैसे SanjuAdmin" required>
+   <label>Admin Password</label><input id="setupPass" type="password" autocomplete="new-password" minlength="8" placeholder="कम से कम 8 अक्षर" required>
+   <button class="btn primary" style="width:100%;margin-top:17px">Admin अकाउंट बनाएँ</button>
+  </form>
+  <form id="loginForm">
+   <label id="loginUserLabel">Admin Username</label><input id="loginUser" autocomplete="username" placeholder="अपना यूजरनेम" required>
+   <label>Password</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="अपना पासवर्ड" required>
+   <button class="btn primary" id="loginBtn" style="width:100%;margin-top:17px">Login करें</button>
+  </form>
+  <p id="authMsg" class="small" role="status" aria-live="polite"></p>
+ </section>
+
+ <section id="adminApp" class="hidden">
+  <header>
+   <div><h2 style="margin:0">Admin Dashboard</h2><div class="muted">नमस्ते, <b id="welcome"></b></div></div>
+   <div class="toolbar">
+    <button class="btn" onclick="downloadBackup()">Backup लें</button>
+    <button class="btn" onclick="document.getElementById('restoreFile').click()">Backup वापस डालें</button>
+    <input id="restoreFile" type="file" accept="application/json,.json" class="hidden" onchange="restoreBackup(event)">
+    <button class="btn red" onclick="logout()">Logout</button>
+   </div>
+  </header>
+  <div class="stats">
+   <div class="stat"><span class="muted">कुल यूजर</span><b id="total">0</b></div>
+   <div class="stat"><span class="muted">Active</span><b id="active">0</b></div>
+   <div class="stat"><span class="muted">Disabled</span><b id="disabled">0</b></div>
+  </div>
+  <div class="card section">
+   <h3>+ नया यूजर बनाएँ</h3>
+   <form id="userForm">
+    <div class="row">
+     <div><label>यूजर का नाम</label><input id="newName" placeholder="पूरा नाम" required></div>
+     <div><label>यूजरनेम / ID</label><input id="newUser" placeholder="जैसे Rahul123" required></div>
+    </div>
+    <div class="row">
+     <div><label>पासवर्ड</label><input id="newPass" type="password" minlength="6" placeholder="कम से कम 6 अक्षर" required></div>
+     <div><label>नोट (वैकल्पिक)</label><input id="newNote" placeholder="जैसे Team A"></div>
+    </div>
+    <button class="btn primary" style="margin-top:15px">यूजर बनाएँ</button>
+    <span id="userMsg" class="small" role="status"></span>
+   </form>
+  </div>
+  <div class="card section">
+   <header><h3 style="margin:0">यूजर लिस्ट</h3><input class="search" id="search" placeholder="नाम या ID खोजें" oninput="renderUsers()"></header>
+   <div class="tablewrap"><table>
+    <thead><tr><th>नाम</th><th>यूजर ID</th><th>नोट</th><th>स्थिति</th><th>एक्शन</th></tr></thead>
+    <tbody id="usersBody"></tbody>
+   </table></div>
+   <div id="empty" class="empty hidden">अभी कोई यूजर नहीं है। ऊपर से नया यूजर बनाएँ।</div>
+  </div>
+  <div class="notice">सुझाव: समय-समय पर <b>Backup लें</b> और फाइल सुरक्षित रखें। Backup में यूजर पासवर्ड भी शामिल हो सकते हैं, इसलिए इसे किसी के साथ साझा न करें।</div>
+ </section>
+
+ <section id="userApp" class="card userbox hidden">
+  <div class="avatar">👤</div>
+  <h2>आपका अकाउंट चालू है</h2>
+  <p class="muted">स्वागत है, <b id="userWelcome"></b></p>
+  <div class="notice">आप सफलतापूर्वक लॉगिन हो गए हैं। यदि आपको कोई समस्या हो, तो अपने Admin से संपर्क करें।</div>
+  <p class="small">आपकी User ID: <b id="userIdDisplay"></b></p>
+  <button class="btn red" onclick="logout()">Logout</button>
+ </section>
+</div>
+<script>
+const KEY='sanjuAgentPanel_singleFile_v2';
+let db=loadDB(), role='admin', currentUser=null;
+function loadDB(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db))}
+function el(id){return document.getElementById(id)}
+function chooseRole(r){
+ role=r;el('adminTab').classList.toggle('active',r==='admin');el('userTab').classList.toggle('active',r==='user');
+ el('loginUserLabel').textContent=r==='admin'?'Admin Username':'User ID / Username';
+ el('loginUser').placeholder=r==='admin'?'Admin Username':'Admin द्वारा दी गई User ID';
+ el('authTitle').textContent=r==='admin'?'Admin Login':'Public User Login';
+ el('authDesc').textContent=r==='admin'?'Admin Dashboard में जाने के लिए लॉगिन करें।':'Admin से मिली User ID और Password डालें।';
+ el('authMsg').textContent='';el('loginForm').reset();
+}
+function showSetup(){
+ el('setupForm').classList.remove('hidden');el('loginForm').classList.add('hidden');el('roleTabs').classList.add('hidden');
+ el('authTitle').textContent='Admin सेटअप';el('authDesc').textContent='पहली बार इस्तेमाल करने से पहले Admin अकाउंट बनाएँ।';
+}
+el('setupForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ if(db){el('authMsg').textContent='Admin पहले से बना हुआ है। लॉगिन करें।';return}
+ const name=el('setupName').value.trim(),username=el('setupUser').value.trim(),password=el('setupPass').value;
+ if(!name||!username||password.length<8){el('authMsg').textContent='सभी जानकारी सही भरें। पासवर्ड कम से कम 8 अक्षर का रखें।';return}
+ db={admin:{name,username,password},users:[]};saveDB();openAdmin();
+});
+el('loginForm').addEventListener('submit',e=>{
+ e.preventDefault();const username=el('loginUser').value.trim(),password=el('loginPass').value;
+ if(role==='admin'){
+  if(!db||db.admin.username.toLowerCase()!==username.toLowerCase()||db.admin.password!==password){el('authMsg').textContent='Admin Username या Password गलत है।';return}
+  openAdmin();
+ }else{
+  if(!db){el('authMsg').textContent='अभी Admin अकाउंट सेटअप नहीं हुआ है।';return}
+  const u=db.users.find(x=>x.username.toLowerCase()===username.toLowerCase()&&x.password===password&&x.active);
+  if(!u){el('authMsg').textContent='User ID/Password गलत है या अकाउंट Disabled है।';return}
+  currentUser=u;openUser();
+ }
+});
+function openAdmin(){el('auth').classList.add('hidden');el('userApp').classList.add('hidden');el('adminApp').classList.remove('hidden');el('welcome').textContent=db.admin.name;renderUsers()}
+function openUser(){el('auth').classList.add('hidden');el('adminApp').classList.add('hidden');el('userApp').classList.remove('hidden');el('userWelcome').textContent=currentUser.name;el('userIdDisplay').textContent=currentUser.username}
+function logout(){currentUser=null;el('adminApp').classList.add('hidden');el('userApp').classList.add('hidden');el('auth').classList.remove('hidden');el('setupForm').classList.add('hidden');el('loginForm').classList.remove('hidden');el('roleTabs').classList.remove('hidden');chooseRole('admin')}
+el('userForm').addEventListener('submit',e=>{
+ e.preventDefault();const name=el('newName').value.trim(),username=el('newUser').value.trim(),password=el('newPass').value,note=el('newNote').value.trim();
+ if(db.users.some(u=>u.username.toLowerCase()===username.toLowerCase())){el('userMsg').textContent='यह User ID पहले से मौजूद है।';el('userMsg').className='small error';return}
+ db.users.push({id:Date.now()+Math.floor(Math.random()*1000),name,username,password,note,active:true});saveDB();e.target.reset();el('userMsg').textContent='यूजर सफलतापूर्वक बन गया।';el('userMsg').className='small success';renderUsers();
+});
+function renderUsers(){
+ if(!db)return;const q=el('search').value.toLowerCase();
+ const list=db.users.filter(u=>(u.name+' '+u.username+' '+(u.note||'')).toLowerCase().includes(q));
+ el('total').textContent=db.users.length;el('active').textContent=db.users.filter(u=>u.active).length;el('disabled').textContent=db.users.filter(u=>!u.active).length;
+ el('usersBody').innerHTML=list.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td>${esc(u.note||'—')}</td><td><span class="pill ${u.active?'':'off'}">${u.active?'Active':'Disabled'}</span></td><td><div class="actions"><button class="btn ${u.active?'gold':'green'}" onclick="toggleUser(${Number(u.id)})">${u.active?'Disable':'Enable'}</button><button class="btn" onclick="resetPassword(${Number(u.id)})">Password बदलें</button><button class="btn red" onclick="removeUser(${Number(u.id)})">Delete</button></div></td></tr>`).join('');
+ el('empty').classList.toggle('hidden',list.length!==0);
+}
+function toggleUser(id){const u=db.users.find(x=>x.id===id);if(!u)return;u.active=!u.active;saveDB();renderUsers()}
+function removeUser(id){const u=db.users.find(x=>x.id===id);if(u&&confirm('क्या '+u.name+' का अकाउंट हमेशा के लिए हटाना चाहते हैं?')){db.users=db.users.filter(x=>x.id!==id);saveDB();renderUsers()}}
+function resetPassword(id){const u=db.users.find(x=>x.id===id);if(!u)return;const p=prompt('इस यूजर के लिए नया पासवर्ड डालें (कम से कम 6 अक्षर):');if(p===null)return;if(p.length<6){alert('पासवर्ड कम से कम 6 अक्षर का होना चाहिए।');return}u.password=p;saveDB();alert('पासवर्ड अपडेट हो गया। यूजर को नया पासवर्ड बता दें।')}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function downloadBackup(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='sanju-agent-panel-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function restoreBackup(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const x=JSON.parse(reader.result);if(!x.admin||!Array.isArray(x.users))throw new Error();if(confirm('मौजूदा डेटा की जगह Backup का डेटा लोड होगा। आगे बढ़ें?')){db=x;saveDB();openAdmin();alert('Backup सफलतापूर्वक वापस आ गया।')}}catch(e){alert('यह Backup फाइल सही नहीं है।')}event.target.value=''};reader.readAsText(file)}
+if(!db)showSetup();else chooseRole('admin');
+</script>
+</body>
+</html>
